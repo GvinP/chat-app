@@ -1,4 +1,4 @@
-import { StyleSheet, Image } from "react-native";
+import { StyleSheet } from "react-native";
 import ChatRoomItem from "../components/ChatRoomItem";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
