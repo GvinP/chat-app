@@ -1,35 +1,18 @@
-import { StyleSheet } from "react-native";
+import { FlatList } from "react-native";
+import Message from "../components/Message";
+import chat from "../assets/dummy-data/Chats";
 
-import EditScreenInfo from "../components/EditScreenInfo";
-import { Text, View } from "../components/Themed";
-
-export default function TabTwoScreen() {
+export default function ChatRoomScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="/screens/TabTwoScreen.tsx" />
-    </View>
+    <FlatList
+      data={chat.messages.reverse()}
+      renderItem={({ item }) => (
+        <Message
+          message={item.content}
+          isMe={chat.users[0].id === item.user.id}
+        />
+      )}
+      inverted
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-});
