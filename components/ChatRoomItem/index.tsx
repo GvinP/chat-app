@@ -1,9 +1,11 @@
-import { Image } from "react-native";
+import { Image, Pressable } from "react-native";
 import { Text, View } from "../Themed";
 import React from "react";
 import styles from "./styles";
+import { useNavigation } from "@react-navigation/native";
 
 interface ChatRoomItemProps {
+  id: string;
   name: string;
   lastMessage: string;
   image: string;
@@ -12,14 +14,19 @@ interface ChatRoomItemProps {
 }
 
 const ChatRoomItem: React.FC<ChatRoomItemProps> = ({
+  id,
   name,
   image,
   date,
   lastMessage,
   newMessages,
 }) => {
+  const navigation = useNavigation();
+  const onPress = () => {
+    navigation.navigate("ChatRoomScreen", { id, title: name });
+  };
   return (
-    <View style={styles.container}>
+    <Pressable onPress={onPress} style={styles.container}>
       <Image source={{ uri: image }} style={styles.image} />
       <View style={styles.contentContainer}>
         <View style={styles.titleContainer}>
@@ -42,7 +49,7 @@ const ChatRoomItem: React.FC<ChatRoomItemProps> = ({
           darkColor="rgba(255,255,255,0.1)"
         />
       </View>
-    </View>
+    </Pressable>
   );
 };
 
