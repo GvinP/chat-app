@@ -14,12 +14,16 @@ import {
   AntDesign,
   Ionicons,
 } from "@expo/vector-icons";
-import { useHeaderHeight } from '@react-navigation/elements'
+import { useHeaderHeight } from "@react-navigation/elements";
+import { sendMessage } from "../../utils/requests";
 
 const MessageInput = () => {
   const [message, setMessage] = useState("");
-  const height = useHeaderHeight()
-  const onPress = () => {};
+  const height = useHeaderHeight();
+  const onPress = () => {
+    sendMessage(message);
+    setMessage("");
+  };
   return (
     <KeyboardAvoidingView
       //   style={styles.container}
