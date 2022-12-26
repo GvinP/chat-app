@@ -1,5 +1,7 @@
-const token = "5975195874:AAH6lZIDDEgysQ0BW3KnOdQVbo_OvxmUiPE";
-const BASE_URL = `https://api.telegram.org/bot${token}`;
+//@ts-ignore
+import {TOKEN} from "@env"
+
+const BASE_URL = `https://api.telegram.org/bot${TOKEN}`;
 const SEND_MESSAGE = BASE_URL + "/sendMessage?chat_id=@foxgroupp&text=";
 const GET_UPDATES = BASE_URL + "/getUpdates";
 
@@ -23,5 +25,5 @@ export const sendMessage = async (message: string) => {
   }
 };
 
-"https://api.telegram.org/bot5975195874:AAH6lZIDDEgysQ0BW3KnOdQVbo_OvxmUiPE/getFile?file_id="
-"https://api.telegram.org/file/bot5975195874:AAH6lZIDDEgysQ0BW3KnOdQVbo_OvxmUiPE/<file_path>"
+"https://api.telegram.org/bot<>/getFile?file_id="
+"https://api.telegram.org/file/bot<>/<file_path>"
