@@ -2,6 +2,10 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  messageContainer: {
     padding: 10,
     margin: 10,
     borderRadius: 10,
@@ -20,6 +24,11 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 14,
     fontWeight: "400",
+  },
+  avatar: {
+    width: 40,
+    aspectRatio: 1,
+    borderRadius: 20,
   },
 });
 

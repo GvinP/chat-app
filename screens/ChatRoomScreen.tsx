@@ -1,7 +1,6 @@
 import { FlatList, View, StyleSheet, Text, ScrollView } from "react-native";
 import { useEffect, useState } from "react";
 import Message from "../components/Message";
-import chat from "../assets/dummy-data/Chats";
 import MessageInput from "../components/MessageInput";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { getUpdates } from "../utils/requests";
@@ -93,9 +92,13 @@ export default function ChatRoomScreen() {
       </ScrollView> */}
       {isLoaded && (
         <FlatList
-          data={data?.filter(item=> item.message.text).reverse()}
+          data={data?.filter((item) => item.message.text).reverse()}
           renderItem={({ item }) => (
-            <Message message={item.message.text} isMe={428522302 === item.message.from?.id} />
+            <Message
+              message={item.message.text}
+              userId={item.message.from?.id}
+              isMe={428522302 === item.message.from?.id}
+            />
           )}
           inverted
         />
