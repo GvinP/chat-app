@@ -1,11 +1,11 @@
 import { Text, View } from "../Themed";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./styles";
 import {
   TextInput,
   Pressable,
   KeyboardAvoidingView,
-  Platform,
+  Platform, Image
 } from "react-native";
 import {
   SimpleLineIcons,
@@ -17,12 +17,30 @@ import {
 import { useHeaderHeight } from "@react-navigation/elements";
 import { sendMessage } from "../../utils/requests";
 import EmojiSelector from "react-native-emoji-selector";
+import * as ImagePicker from "expo-image-picker";
 
 const MessageInput = () => {
   const [message, setMessage] = useState("");
   const [isEmpjiPickerOpen, setIsEmpjiPickerOpen] = useState(false);
+  const [image, setImage] = useState<string | null>(null);
   const height = useHeaderHeight();
-  const onPress = () => {
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  const onsendMessage = () => {
     sendMessage(message);
     setMessage("");
     setIsEmpjiPickerOpen(false);
@@ -34,6 +52,7 @@ const MessageInput = () => {
       enabled
       style={{ height: isEmpjiPickerOpen ? "70%" : "auto" }}
     >
+      {image&&<Image source={{uri: image}} style={{width: 50, aspectRatio: 1}}/>}
       <View style={styles.container}>
         <View style={styles.row}>
           <View style={styles.inputContainer}>
@@ -52,6 +71,14 @@ const MessageInput = () => {
               placeholder="message ..."
               placeholderTextColor={"#888"}
             />
+            <Pressable onPress={pickImage}>
+              <Feather
+                name="image"
+                size={24}
+                color={"#888"}
+                style={styles.icon}
+              />
+            </Pressable>
             <Feather
               name="camera"
               size={24}
@@ -65,7 +92,7 @@ const MessageInput = () => {
               style={styles.icon}
             />
           </View>
-          <Pressable onPress={onPress} style={styles.buttonContainer}>
+          <Pressable onPress={onsendMessage} style={styles.buttonContainer}>
             {message ? (
               <Ionicons name="send" size={24} color={"#fff"} />
             ) : (
