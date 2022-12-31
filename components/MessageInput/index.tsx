@@ -5,7 +5,8 @@ import {
   TextInput,
   Pressable,
   KeyboardAvoidingView,
-  Platform, Image
+  Platform,
+  Image,
 } from "react-native";
 import {
   SimpleLineIcons,
@@ -15,14 +16,15 @@ import {
   Ionicons,
 } from "@expo/vector-icons";
 import { useHeaderHeight } from "@react-navigation/elements";
-import { sendMessage } from "../../utils/requests";
+import { sendImage, sendMessage } from "../../utils/requests";
 import EmojiSelector from "react-native-emoji-selector";
 import * as ImagePicker from "expo-image-picker";
+import { ImagePickerResult } from "expo-image-picker/build/ImagePicker.types";
 
 const MessageInput = () => {
   const [message, setMessage] = useState("");
   const [isEmpjiPickerOpen, setIsEmpjiPickerOpen] = useState(false);
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<ImagePickerResult | null>(null);
   const height = useHeaderHeight();
 
   const pickImage = async () => {
@@ -32,16 +34,13 @@ const MessageInput = () => {
       aspect: [4, 3],
       quality: 1,
     });
-
-    console.log(result);
-
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      setImage(result);
     }
   };
-
   const onsendMessage = () => {
-    sendMessage(message);
+    if (image) sendImage(image);
+    if (message) sendMessage(message);
     setMessage("");
     setIsEmpjiPickerOpen(false);
   };
@@ -52,7 +51,12 @@ const MessageInput = () => {
       enabled
       style={{ height: isEmpjiPickerOpen ? "70%" : "auto" }}
     >
-      {image&&<Image source={{uri: image}} style={{width: 50, aspectRatio: 1}}/>}
+      {image && (
+        <Image
+          source={{ uri: image?.assets?.[0].uri }}
+          style={{ width: 50, aspectRatio: 1 }}
+        />
+      )}
       <View style={styles.container}>
         <View style={styles.row}>
           <View style={styles.inputContainer}>
@@ -93,7 +97,7 @@ const MessageInput = () => {
             />
           </View>
           <Pressable onPress={onsendMessage} style={styles.buttonContainer}>
-            {message ? (
+            {message || image ? (
               <Ionicons name="send" size={24} color={"#fff"} />
             ) : (
               <AntDesign name="plus" size={24} color={"#fff"} />
