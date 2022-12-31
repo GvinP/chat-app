@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
-import { Photo } from "../../screens/ChatRoomScreen";
+import { Photo, Result } from "../../screens/ChatRoomScreen";
 import { getFile, getUserProfilePhotos, GET_FILE } from "../../utils/requests";
 import { Text, View } from "../Themed";
 import styles from "./styles";
 
 interface MessageProps {
-  message: string;
-  userId: number;
-  isMe: boolean;
+  item: Result;
 }
 
 export interface File {
@@ -18,19 +16,24 @@ export interface File {
   file_path: string;
 }
 
-const Message: React.FC<MessageProps> = ({ message, isMe, userId }) => {
+const Message: React.FC<MessageProps> = ({ item }) => {
   const [data, setData] = useState<Photo[]>();
-  const [file, setFile] = useState<File>();
-
+  const [avatar, setAvatar] = useState<string | null>(null);
+  const [photo, setPhoto] = useState<string | null>(null);
+  const isMe = 428522302 === item.message.from.id;
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getUserProfilePhotos(userId);
+        const response = await getUserProfilePhotos(item.message.from.id);
         setData(response.result?.photos?.[0]);
-        const response2 = await getFile(
+        const avatar = await getFile(
           response.result?.photos?.[0]?.[0]?.file_id || ""
         );
-        setFile(response2.result);
+        setAvatar(avatar?.result?.file_path);
+        if (item.message.photo) {
+          const photo = await getFile(item.message.photo[2].file_id);
+          setPhoto(photo.result.file_path);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -42,7 +45,7 @@ const Message: React.FC<MessageProps> = ({ message, isMe, userId }) => {
     <View style={styles.container}>
       {!isMe && (
         <Image
-          source={{ uri: GET_FILE + file?.file_path }}
+          source={{ uri: GET_FILE + avatar }}
           style={[styles.avatar, { marginLeft: 10 }]}
         />
       )}
@@ -52,13 +55,21 @@ const Message: React.FC<MessageProps> = ({ message, isMe, userId }) => {
           isMe ? styles.containerRight : styles.containerLeft,
         ]}
       >
-        <Text style={[styles.text, { color: isMe ? "#333" : "#fff" }]}>
-          {message}
-        </Text>
+        {!!item.message.text && (
+          <Text style={[styles.text, { color: isMe ? "#333" : "#fff" }]}>
+            {item.message.text}
+          </Text>
+        )}
+        {photo && (
+          <Image
+            source={{ uri: GET_FILE + photo }}
+            style={{ width: 250, aspectRatio: 1 }}
+          />
+        )}
       </View>
       {isMe && (
         <Image
-          source={{ uri: GET_FILE + file?.file_path }}
+          source={{ uri: GET_FILE + avatar }}
           style={[styles.avatar, { marginRight: 10 }]}
         />
       )}

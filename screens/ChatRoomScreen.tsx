@@ -56,9 +56,9 @@ export interface Message {
   from: From;
   chat: Chat;
   date: number;
-  sticker: Sticker;
-  text: string;
-  photo: Photo[];
+  sticker?: Sticker;
+  text?: string;
+  photo?: Photo[];
 }
 
 export interface Result {
@@ -92,13 +92,9 @@ export default function ChatRoomScreen() {
       </ScrollView> */}
       {isLoaded && (
         <FlatList
-          data={data?.filter((item) => item.message.text).reverse()}
+          data={data?.reverse()}
           renderItem={({ item }) => (
-            <Message
-              message={item.message.text}
-              userId={item.message.from?.id}
-              isMe={428522302 === item.message.from?.id}
-            />
+            <Message {...{item}}/>
           )}
           inverted
         />
