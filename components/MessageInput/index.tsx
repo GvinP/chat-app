@@ -19,12 +19,12 @@ import { useHeaderHeight } from "@react-navigation/elements";
 import { sendImage, sendMessage } from "../../utils/requests";
 import EmojiSelector from "react-native-emoji-selector";
 import * as ImagePicker from "expo-image-picker";
-import { ImagePickerResult } from "expo-image-picker/build/ImagePicker.types";
+import { ImagePickerAsset } from "expo-image-picker/build/ImagePicker.types";
 
 const MessageInput = () => {
   const [message, setMessage] = useState("");
   const [isEmpjiPickerOpen, setIsEmpjiPickerOpen] = useState(false);
-  const [image, setImage] = useState<ImagePickerResult | null>(null);
+  const [image, setImage] = useState<ImagePickerAsset[] | null>(null);
   const height = useHeaderHeight();
 
   const pickImage = async () => {
@@ -35,15 +35,17 @@ const MessageInput = () => {
       quality: 1,
     });
     if (!result.canceled) {
-      setImage(result);
+      setImage(result.assets);
     }
   };
   const onsendMessage = () => {
     if (image) sendImage(image);
     if (message) sendMessage(message);
     setMessage("");
+    setImage(null);
     setIsEmpjiPickerOpen(false);
   };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -52,10 +54,25 @@ const MessageInput = () => {
       style={{ height: isEmpjiPickerOpen ? "70%" : "auto" }}
     >
       {image && (
-        <Image
-          source={{ uri: image?.assets?.[0].uri }}
-          style={{ width: 50, aspectRatio: 1 }}
-        />
+        <View style={styles.sendMessageContainer}>
+          <Image
+            source={{ uri: image?.[0].uri }}
+            style={{
+              width: 100,
+              aspectRatio: 1,
+              borderBottomLeftRadius: 10,
+              borderTopLeftRadius: 10,
+            }}
+          />
+          <Pressable onPress={() => setImage(null)}>
+            <AntDesign
+              name="close"
+              size={24}
+              color={"#fff"}
+              style={{ padding: 10 }}
+            />
+          </Pressable>
+        </View>
       )}
       <View style={styles.container}>
         <View style={styles.row}>

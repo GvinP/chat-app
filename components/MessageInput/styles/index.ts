@@ -35,6 +35,15 @@ const styles = StyleSheet.create({
   button: {
     fontSize: 35,
   },
+  sendMessageContainer: {
+    flexDirection: "row",
+    margin: 10,
+    alignSelf: "stretch",
+    justifyContent: "space-between",
+    borderColor: "#cecece",
+    borderWidth: 1,
+    borderRadius: 10,
+  },
 });
 
 export default styles;

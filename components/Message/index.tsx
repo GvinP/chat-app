@@ -44,6 +44,7 @@ const Message: React.FC<MessageProps> = ({ item }) => {
     };
     fetchData();
   }, []);
+  console.log(item)
   return (
     <View style={styles.container}>
       {!isMe && (

@@ -1,6 +1,6 @@
 //@ts-ignore
 import { TOKEN } from "@env";
-import { ImagePickerResult } from "expo-image-picker/build/ImagePicker.types";
+import { ImagePickerAsset } from "expo-image-picker/build/ImagePicker.types";
 
 const BASE_URL = `https://api.telegram.org`;
 const BOT = `/bot${TOKEN}`;
@@ -52,8 +52,8 @@ export const getFile = async (fileId: string) => {
   }
 };
 
-export const sendImage = async (image: ImagePickerResult) => {
-  const localUri = image.assets?.[0].uri;
+export const sendImage = async (image: ImagePickerAsset[]) => {
+  const localUri = image?.[0].uri;
   const filename = localUri?.split("/").pop();
   const match = /\.(\w+)$/.exec(filename || "");
   const type = match ? `image/${match[1]}` : `image`;

@@ -3,7 +3,9 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-end",
+    // borderColor: "red",
+    // borderWidth: 2,
   },
   messageContainer: {
     margin: 10,
@@ -29,6 +31,7 @@ const styles = StyleSheet.create({
     width: 40,
     aspectRatio: 1,
     borderRadius: 20,
+    margin: 10,
   },
 });
 
