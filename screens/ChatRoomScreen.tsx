@@ -10,7 +10,6 @@ export interface From {
   is_bot: boolean;
   first_name: string;
   username: string;
-  language_code: string;
   last_name: string;
 }
 
@@ -21,12 +20,60 @@ export interface Chat {
   type: string;
 }
 
+export interface Photo {
+  file_id: string;
+  file_unique_id: string;
+  file_size: number;
+  width: number;
+  height: number;
+}
+
 export interface Thumb {
   file_id: string;
   file_unique_id: string;
   file_size: number;
   width: number;
   height: number;
+}
+
+export interface Video {
+  duration: number;
+  width: number;
+  height: number;
+  file_name: string;
+  mime_type: string;
+  thumb: Thumb;
+  file_id: string;
+  file_unique_id: string;
+  file_size: number;
+}
+
+export interface Document {
+  file_name: string;
+  mime_type: string;
+  file_id: string;
+  file_unique_id: string;
+  file_size: number;
+}
+
+export interface Location {
+  latitude: number;
+  longitude: number;
+}
+
+export interface Contact {
+  phone_number: string;
+  first_name: string;
+  vcard: string;
+  user_id: number;
+}
+
+export interface Voice {
+  duration: number;
+  mime_type: string;
+  file_id: string;
+  file_unique_id: string;
+  file_size: number;
 }
 
 export interface Sticker {
@@ -43,22 +90,19 @@ export interface Sticker {
   file_size: number;
 }
 
-export interface Photo {
-  file_id: string;
-  file_unique_id: string;
-  file_size: number;
-  width: number;
-  height: number;
-}
-
 export interface Message {
   message_id: number;
   from: From;
   chat: Chat;
   date: number;
+  photo?: Photo[];
+  video?: Video;
+  document?: Document;
+  location?: Location;
+  contact?: Contact;
+  voice?: Voice;
   sticker?: Sticker;
   text?: string;
-  photo?: Photo[];
 }
 
 export interface Result {
@@ -85,6 +129,7 @@ export default function ChatRoomScreen() {
     };
     fetchData();
   }, []);
+
   return (
     <View style={styles.page}>
       {/* <ScrollView>
