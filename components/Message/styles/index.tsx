@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   messageContainer: {
-    padding: 10,
     margin: 10,
     borderRadius: 10,
     maxWidth: "75%",
@@ -24,6 +23,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 14,
     fontWeight: "400",
+    margin: 10,
   },
   avatar: {
     width: 40,
