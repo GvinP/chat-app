@@ -6,7 +6,7 @@ const BASE_URL = `https://api.telegram.org`;
 const BOT = `/bot${TOKEN}`;
 const SEND_MESSAGE = BASE_URL + BOT + "/sendMessage?chat_id=@foxgroupp&text=";
 const GET_UPDATES = BASE_URL + BOT + "/getUpdates";
-const SEND_PHOTO = BASE_URL + BOT + "/sendPhoto?chat_id=@foxgroupp";
+export const SEND_PHOTO = BASE_URL + BOT + "/sendPhoto?chat_id=@foxgroupp";
 const GET_USER_PROFILE_PHOTOS =
   BASE_URL + BOT + "/getUserProfilePhotos?user_id=";
 const GET_FILE_REQUEST = BASE_URL + BOT + "/getFile?file_id=";
