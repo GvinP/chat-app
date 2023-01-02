@@ -28,7 +28,7 @@ const MessageInput = () => {
   const height = useHeaderHeight();
 
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
@@ -38,6 +38,23 @@ const MessageInput = () => {
       setImage(result.assets);
     }
   };
+
+  const takePhoto = async () => {
+    try {
+      const permisssion = await ImagePicker.getCameraPermissionsAsync();
+      console.log(permisssion);
+      const result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        aspect: [4, 3],
+      });
+      if (!result.canceled) {
+        setImage(result.assets);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const onsendMessage = () => {
     if (image) sendImage(image);
     if (message) sendMessage(message);
@@ -100,12 +117,14 @@ const MessageInput = () => {
                 style={styles.icon}
               />
             </Pressable>
-            <Feather
-              name="camera"
-              size={24}
-              color={"#888"}
-              style={styles.icon}
-            />
+            <Pressable onPress={takePhoto}>
+              <Feather
+                name="camera"
+                size={24}
+                color={"#888"}
+                style={styles.icon}
+              />
+            </Pressable>
             <MaterialCommunityIcons
               name="microphone-outline"
               size={24}

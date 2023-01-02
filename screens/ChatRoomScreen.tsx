@@ -9,8 +9,8 @@ export interface From {
   id: number;
   is_bot: boolean;
   first_name: string;
+  last_name?: string;
   username: string;
-  last_name: string;
 }
 
 export interface Chat {
@@ -18,14 +18,6 @@ export interface Chat {
   title: string;
   username: string;
   type: string;
-}
-
-export interface Photo {
-  file_id: string;
-  file_unique_id: string;
-  file_size: number;
-  width: number;
-  height: number;
 }
 
 export interface Thumb {
@@ -54,6 +46,7 @@ export interface Document {
   file_id: string;
   file_unique_id: string;
   file_size: number;
+  thumb: Thumb;
 }
 
 export interface Location {
@@ -90,12 +83,30 @@ export interface Sticker {
   file_size: number;
 }
 
+export interface Animation {
+  file_name: string;
+  mime_type: string;
+  duration: number;
+  width: number;
+  height: number;
+  thumb: Thumb;
+  file_id: string;
+  file_unique_id: string;
+  file_size: number;
+}
+
+export interface Photo {
+  file_id: string;
+  file_unique_id: string;
+  file_size: number;
+  width: number;
+  height: number;
+}
 export interface Message {
   message_id: number;
   from: From;
   chat: Chat;
   date: number;
-  photo?: Photo[];
   video?: Video;
   document?: Document;
   location?: Location;
@@ -103,6 +114,16 @@ export interface Message {
   voice?: Voice;
   sticker?: Sticker;
   text?: string;
+  animation?: Animation;
+  forward_from?: From;
+  forward_date?: number;
+  media_group_id?: string;
+  photo?: Photo[];
+  caption?: string;
+  forward_from_chat?: Chat;
+  forward_from_message_id?: number;
+  message_thread_id?: number;
+  reply_to_message?: Message;
 }
 
 export interface Result {
@@ -129,7 +150,7 @@ export default function ChatRoomScreen() {
     };
     fetchData();
   }, []);
-
+// console.log(JSON.stringify(data))
   return (
     <View style={styles.page}>
       {/* <ScrollView>

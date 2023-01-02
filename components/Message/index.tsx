@@ -34,6 +34,10 @@ const Message: React.FC<MessageProps> = ({ item }) => {
           const photo = await getFile(item.message.photo[2].file_id);
           setPhoto(photo.result.file_path);
         }
+        if (item.message.document) {
+          const document = await getFile(item.message.document.file_id);
+          setVideo(document.result.file_path);
+        }
         if (item.message.video) {
           const video = await getFile(item.message.video.file_id);
           setVideo(video.result.file_path);
@@ -44,7 +48,7 @@ const Message: React.FC<MessageProps> = ({ item }) => {
     };
     fetchData();
   }, []);
-  console.log(item)
+  // console.log({item})
   return (
     <View style={styles.container}>
       {!isMe && (
@@ -67,15 +71,20 @@ const Message: React.FC<MessageProps> = ({ item }) => {
         {photo && (
           <Image
             source={{ uri: GET_FILE + photo }}
-            style={{ width: 250, aspectRatio: 1, borderRadius: 10 }}
+            style={{ width: "100%", aspectRatio: 1, borderRadius: 10 }}
+            resizeMode="cover"
           />
         )}
         {video && (
           <Video
             style={{
               maxWidth: 260,
-              width: item.message.video?.thumb.width,
-              height: item.message.video?.thumb.height,
+              width:
+                item.message.video?.thumb.width ||
+                item.message.document?.thumb?.width,
+              height:
+                item.message.video?.thumb.height ||
+                item.message.document?.thumb?.height,
               borderRadius: 10,
             }}
             source={{
